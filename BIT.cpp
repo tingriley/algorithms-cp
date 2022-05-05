@@ -28,6 +28,5 @@ int main()
         update(BIT, i, nums[i]);
     
     cout << getSum(BIT, 3) << endl;
-
     return 0;
 }
