@@ -3,36 +3,6 @@ using namespace std;
 // str = "abababab"
 // Z[] = {x, 0, 6, 0, 4, 0, 2, 0}
 
-vector<int> zarr(string s){
-
-	int n = s.size();
-	vector<int>z(n);
-	z[0] = n;
-	int L, R, k;
-	L = R = 0;
-	for(int i = 1; i < n; i++){
-		if(i > R){
-			L = R = i;
-			while (R < n && s[R-L] == s[R])R++;
-			z[i] = R-L;
-			R--;
-		}
-		else{
-			int k = i -L;
-			if (z[k] < R-i+1)
-                z[i] = z[k];
-            else
-            {
-                L = i;
-                while (R<n && s[R-L] == s[R])
-                    R++;
-                z[i] = R-L;
-                R--;
-            }
-		}
-	}
-	return z;
-}
 
 vector<int> z_function(string s) {
     int n = (int) s.length();
@@ -51,8 +21,6 @@ vector<int> z_function(string s) {
 
 int main()
 {
-	vector<int> v = zarr("aaaaa");
-	for(auto &x:v)
-		cout << x << endl;
+    vector<int>v = z_function("aaaacbaa");
 	return 0;
 }
