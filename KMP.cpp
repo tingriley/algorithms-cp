@@ -1,41 +1,58 @@
 #include<bits/stdc++.h>
 using namespace std;
-
-vector<int> build(string &t){
-    vector<int>next(t.size());
-    next[0] = -1;
-
-    for(int i = 1, j = -1; i < t.size(); i++){
-        while(j >= 0 && t[i] != t[j+1])
-            j = next[j];
-
-        if(t[i] == t[j+1])
+//https://yeefun.github.io/kmp-algorithm-for-beginners/
+/*
+a a b a a b c c a 
+0 1 0 1 2 3 0 0 1 
+*/ 
+vector<int> prefix_function(string s){
+    int n = (int)s.length();
+    vector<int>p(n, 0);
+    for(int i = 1; i < n; i++){
+        int j = p[i-1];
+       
+        while(j > 0 && s[i]!=s[j]){
+            j = p[j-1];
+        }
+        if(s[i] == s[j]){
             j++;
+        }
+        p[i] = j;
 
-        next[i] = j;
+
     }
-    return next;
+    return p;
 }
 
-bool match(string &s, string &t, vector<int> &next) {
-    for (int i = 0, j = -1 ; i < s.size() ; i++) {
-        while (j >= 0 && s[i] != t[j + 1])
-            j = next[j];
- 
-        if (s[i] == t[j + 1])
-            j++;
-         
-        if (j + 1 == (int)t.size())
-            return true;
+int findPattern(string str, string pattern) {
+    vector<int> lps = prefix_function(pattern);
+  
+    int i = 0, j = 0;
+    while (i < str.length()) {
+      if (str[i] == pattern[j]) {
+          i++;
+          j++;
+      } else {
+          if (j == 0) {
+              i++;
+          } else {
+              j = lps[j - 1];
+          }
+      }
+      if (j == pattern.length()) return i - pattern.length();
     }
-    return false;
+    return -1;
 }
-
-int main()
-{
-    string s = "aabaaaabab";
-    string t = "aabab";
-    vector<int>next = build(t);
-    cout << match(s, t, next) << "\n";
+int main(){
+    string s1 = "aabaabcca";
+    vector<int> p = prefix_function(s1);
+    for(char c: s1){
+        cout << c << " ";
+    }
+    cout << endl;
+    for(int v: p){
+        cout << v << " ";
+    }
+    cout << endl;
     return 0;
 }
